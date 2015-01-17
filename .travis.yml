@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - '0.10'
 before_install:
+  - npm install -g gulp
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != 'generator-ng-poly' ]; then cd .. && eval "mv $currentfolder generator-ng-poly" && cd generator-ng-poly; fi
+install: npm install
 after_success: npm run-script coveralls
