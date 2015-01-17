@@ -21,5 +21,4 @@ build: off
 test_script:
   - node --version
   - npm --version
-  - cmd: npm test
-  - ps: npm test
+  - npm test
