@@ -1,13 +1,13 @@
-/*global describe, before, it*/
+/* global describe, before, it */
 'use strict';
-var assert = require('yeoman-generator').assert
-  , helpers = require('yeoman-generator').test
-  , join = require('path').join;
+import assert from 'yeoman-assert';
+import {join} from 'path';
+import helpers from 'yeoman-test';
 
-describe('Decorator generator', function () {
-  before(function (done) {
+describe('Decorator generator', () => {
+  before(done => {
     helpers
-      .run(join(__dirname, '../app'))
+      .run(join(__dirname, '../generators/app'))
       .withPrompts({
         appName: 'temp-decorator',
         markup: 'html',
@@ -19,18 +19,18 @@ describe('Decorator generator', function () {
         bower: []
       })
       .withGenerators([
-        join(__dirname, '../module'),
-        join(__dirname, '../route'),
-        join(__dirname, '../controller'),
-        join(__dirname, '../view')
+        join(__dirname, '../generators/module'),
+        join(__dirname, '../generators/route'),
+        join(__dirname, '../generators/controller'),
+        join(__dirname, '../generators/view')
       ])
       .on('end', done);
   });
 
-  describe('with JS app and test', function () {
-    before(function (done) {
+  describe('with JS app and test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../decorator'), {
+        .run(join(__dirname, '../generators/decorator'), {
           tmpdir: false
         })
         .withArguments(['test'])
@@ -40,7 +40,7 @@ describe('Decorator generator', function () {
         .on('end', done);
     });
 
-    it('should create decorator files', function () {
+    it('should create decorator files', () => {
       assert.file([
         'app/home/test-decorator.js',
         'app/home/test-decorator_test.js'
@@ -48,10 +48,10 @@ describe('Decorator generator', function () {
     });
   });
 
-  describe('with Coffee app and test', function () {
-    before(function (done) {
+  describe('with Coffee app and test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../decorator'), {
+        .run(join(__dirname, '../generators/decorator'), {
           tmpdir: false
         })
         .withArguments(['$urlRouterProvider'])
@@ -64,7 +64,7 @@ describe('Decorator generator', function () {
         .on('end', done);
     });
 
-    it('should create decorator files with stripped $', function () {
+    it('should create decorator files with stripped $', () => {
       assert.file([
         'app/home/decorators/url-router-provider-decorator.coffee',
         'app/home/decorators/url-router-provider-decorator_test.coffee'
@@ -72,10 +72,10 @@ describe('Decorator generator', function () {
     });
   });
 
-  describe('with ES2105 app and test', function () {
-    before(function (done) {
+  describe('with ES2105 app and test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../decorator'), {
+        .run(join(__dirname, '../generators/decorator'), {
           tmpdir: false
         })
         .withArguments(['test'])
@@ -87,7 +87,7 @@ describe('Decorator generator', function () {
         .on('end', done);
     });
 
-    it('should create decorator files', function () {
+    it('should create decorator files', () => {
       assert.file([
         'app/home/test-decorator.es6',
         'app/home/test-decorator_test.es6'
@@ -95,10 +95,10 @@ describe('Decorator generator', function () {
     });
   });
 
-  describe('with TypeScript app and test', function () {
-    before(function (done) {
+  describe('with TypeScript app and test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../decorator'), {
+        .run(join(__dirname, '../generators/decorator'), {
           tmpdir: false
         })
         .withArguments(['test'])
@@ -110,7 +110,7 @@ describe('Decorator generator', function () {
         .on('end', done);
     });
 
-    it('should create decorator files', function () {
+    it('should create decorator files', () => {
       assert.file([
         'app/home/test-decorator.ts',
         'app/home/test-decorator_test.ts'

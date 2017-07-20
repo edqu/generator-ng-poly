@@ -1,5 +1,16 @@
-# generator-ng-poly [![NPM version](https://badge.fury.io/js/generator-ng-poly.svg)](http://badge.fury.io/js/generator-ng-poly) [![Build Status](https://travis-ci.org/dustinspecker/generator-ng-poly.svg?branch=master)](https://travis-ci.org/dustinspecker/generator-ng-poly) [![Coverage Status](https://img.shields.io/coveralls/dustinspecker/generator-ng-poly.svg)](https://coveralls.io/r/dustinspecker/generator-ng-poly?branch=master)
-[![Code Climate](https://codeclimate.com/github/dustinspecker/generator-ng-poly/badges/gpa.svg)](https://codeclimate.com/github/dustinspecker/generator-ng-poly) [![Dependencies](https://david-dm.org/dustinspecker/generator-ng-poly.svg)](https://david-dm.org/dustinspecker/generator-ng-poly/#info=dependencies&view=table) [![DevDependencies](https://david-dm.org/dustinspecker/generator-ng-poly/dev-status.svg)](https://david-dm.org/dustinspecker/generator-ng-poly/#info=devDependencies&view=table)
+# generator-ng-poly
+[![NPM version](https://badge.fury.io/js/generator-ng-poly.svg)](http://badge.fury.io/js/generator-ng-poly)
+[![Build Status](https://travis-ci.org/dustinspecker/generator-ng-poly.svg?branch=master)](https://travis-ci.org/dustinspecker/generator-ng-poly)
+[![Coverage Status](https://img.shields.io/coveralls/dustinspecker/generator-ng-poly.svg)](https://coveralls.io/r/dustinspecker/generator-ng-poly?branch=master)
+[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors)
+
+[![Code Climate](https://codeclimate.com/github/dustinspecker/generator-ng-poly/badges/gpa.svg)](https://codeclimate.com/github/dustinspecker/generator-ng-poly)
+[![Dependencies](https://david-dm.org/dustinspecker/generator-ng-poly.svg)](https://david-dm.org/dustinspecker/generator-ng-poly/#info=dependencies&view=table)
+[![DevDependencies](https://david-dm.org/dustinspecker/generator-ng-poly/dev-status.svg)](https://david-dm.org/dustinspecker/generator-ng-poly/#info=devDependencies&view=table)
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 > [Yeoman](http://yeoman.io) generator for modular AngularJS apps with Gulp and optional Polymer support
 
@@ -21,10 +32,10 @@ Install `generator-ng-poly`:
 npm install -g bower gulp yo generator-ng-poly
 ```
 
-If TypeScript is going to be used, `tsd@next` will need to be installed:
+If TypeScript is going to be used, `tsd` will need to be installed:
 
 ```
-npm install -g tsd@next
+npm install -g tsd
 ```
 
 Run `yo ng-poly`
@@ -60,7 +71,7 @@ Available generators:
 
 Languages and Features supported:
   * Angular Versions
-    - 1.2.\*, 1.3.\*, 1.4.\* (currently in RC)
+    - 1.2.\*, 1.3.\*, 1.4.\*
   * Markup
     - HAML, HTML, Jade
   * Application scripting languages
@@ -81,7 +92,7 @@ Languages and Features supported:
     - Angular Material (1.3.* or higher only)
       - Doesn't scaffold navbar, yet
     - Bootstrap with AngularStrap
-    - Bootstrap with UI Bootstrap (1.2.* only)
+    - Bootstrap with UI Bootstrap
     - Foundation with Angular Foundation
   * Polymer
     - Core, Paper
@@ -101,6 +112,7 @@ Languages and Features supported:
 [Configurations](#configurations):
   * Syntax
     - [Controller As](#controller-as-syntax)
+    - [Directive TemplateUrl](#directive-templateurl)
 
 † e2e tests are not supported in TypeScript. JavaScript will instead be used for e2e tests.
 
@@ -147,6 +159,7 @@ Run `yo ng-poly` to get started. ng-poly will then asks you some questions:
 [?] Which is the preferred markup language?
 [?] Which is the preferred application scripting language?
 [?] Want to use Controller As syntax?
+[?] Should directives be generated using a templateUrl (and markup file) instead of an inline template?
 [?] By default, should the route generator create controllers?
 [?] Which is the preferred test scripting language?
 [?] Which is the preferred unit testing framework?
@@ -213,7 +226,8 @@ root/
 ├── package.json
 ├── protractor.config.js
 ├── README.md
-└── tsd.json*
+├── tsd.json*
+└── tslint.json*
 ```
 
 A **module-type** structure produces:
@@ -260,7 +274,8 @@ root/
 ├── package.json
 ├── protractor.config.js
 ├── README.md
-└── tsd.json*
+├── tsd.json*
+└── tslint.json*
 ```
 \* Only TypeScript projects will have this.
 ### Constant
@@ -1094,9 +1109,9 @@ Produces `app/components/gold-silver/gold-silver.js`:
 (function () {
   'use strict';
 
-  var element = new Polymer('gold-silver', {
-    name: 'gold-silver',
-    domReady: function () {
+  var element = new Polymer({
+    is: 'gold-silver',
+    ready: function () {
       console.log('gold-silver');
     }
   });
@@ -1109,19 +1124,14 @@ Produces `app/components/gold-silver/gold-silver.js`:
 
 ## Configurations
 
-It is possible to override the configurations initially specified when `yo ng-poly` was ran.
+It is possible to override some configurations initially specified when `yo ng-poly` was ran.
 
-Each generator is able to take the following arguments. For example, `yo ng-poly:module test --controller-as=true --markup=jade` will override the configuration settings for everything generated by this command.
+Each generator is able to take the following arguments. For example, `yo ng-poly:module test --skip-controller=true` will override the configuration settings for everything generated by this command.
 
-| Option | Possible Values|
-| ------ | -------------- |
-| app-script | coffee, es6, js, ts |
-| markup | haml, html, jade|
-| style | css, less, scss, styl|
-| test-script | coffee, es6, js, ts |
-| controller-as | true, false |
-| skip-controller | true, false |
-| ng-route | true, false|
+| Option | Possible Values| Description |
+| ------ | -------------- | ----------- |
+| directive-template-url | true, false | Use external markup files and templateUrl instead of template in directives |
+| skip-controller | true, false | Skip creating controllers when generating routes and modules |
 
 **It's not recommended to mix ngRoute and UI Router, but it's possible.**
 
@@ -1263,6 +1273,89 @@ Lastly, views will be generated like:
 <p>{{home.ctrlName}}</p>
 ```
 
+### Directive TemplateUrl
+
+This generator has supporting for creating directives with inline templates and external markup files using templateUrl.
+
+If Directive TemplateUrl is enabled, directives will be created as described [above](#directive).
+
+If Directive TemplateUrl is disabled, directives will be created like below.
+
+Example:
+```
+yo ng-poly:directive fancy-button
+[?] Which module is this for?
+```
+
+Produces `app/module/fancy-button-directive.js`:
+```javascript
+(function () {
+  'use strict';
+
+  /**
+   * @ngdoc directive
+   * @name module.directive:fancyButton
+   * @restrict EA
+   * @element
+   *
+   * @description
+   *
+   * @example
+     <example module="module">
+       <file name="index.html">
+        <fancy-button></fancy-button>
+       </file>
+     </example>
+   *
+   */
+  angular
+    .module('module')
+    .directive('fancyButton', fancyButton);
+
+  function fancyButton() {
+    return {
+      restrict: 'EA',
+      scope: {},
+      template: '<div>{{fancyButton.name}}</div>',
+      replace: false,
+      controller: function (scope) {
+        scope.fancyButton = {};
+        scope.fancyButton.name = 'fancyButton';
+      },
+      link: function (scope, element, attrs) {
+        /*jshint unused:false */
+        /*eslint "no-unused-vars": [2, {"args": "none"}]*/
+      }
+    };
+  }
+}());
+
+```
+
+Produces `app/module/fancy-button-directive_test.js`:
+```javascript
+/*global describe, beforeEach, it, expect, inject, module*/
+'use strict';
+
+describe('fancyButton', function () {
+  var scope;
+  var element;
+
+  beforeEach(module('module'));
+
+  beforeEach(inject(function ($compile, $rootScope) {
+    scope = $rootScope.$new();
+    element = $compile(angular.element('<fancy-button></fancy-button>'))(scope);
+  }));
+
+  it('should have correct text', function () {
+    scope.$apply();
+    expect(element.isolateScope().fancyButton.name).toEqual('fancyButton');
+  });
+});
+
+```
+
 * * *
 
 ## Gulp Tasks in Detail
@@ -1302,10 +1395,60 @@ Available tasks:
  - Runs Protractor to perform e2eTest (**app needs to be running via `gulp default`**)
 - `gulp webdriverUpdate` downloads Selenium and webdrivers for e2e testing
 - `gulp analyze`
- - Analyzes source and test code with CoffeeLint, ESLint, JSHint, and JSCS
+ - Analyzes source and test code with CoffeeLint, TSLint, ESLint, JSHint, and JSCS
  - Uses Plato to inspect source and test for complexity and maintainability
 
 * * *
+
+## How to Add Polymer elements
+
+Currently, this process isn't as simple as desired. **Pull requests are greatly appreciated to help this process in any way.**
+
+For this, we're going to install and setup `paper-toolbar`.
+
+1. Run `bower install --save polymerelements/paper-toolbar` to download `paper-toolbar` and its dependencies.
+1. Digging through `bower_components/paper-toolbar/`, we can determine it needs to have `paper-toolbar/paper-toolbar.html`, `paper-styles/paper-styles.html`, and `polymer/polymer`. We then dig through `bower_components/paper-styles/` to find it needs `paper-styles/paper-styles.html`, `paper-styles/color.html`, `paper-styles/default-theme.html`, `paper-styles/shadow.html`, `paper-styles/typography.html`, `iron-flex-layout/iron-flex-layout.html`, and `iron-flex-layout/classes/iron-flex-layout.html`. Then we dig through `iron-flex-layout/iron-flex-layout` to find out we just need to additionally include `iron-flex-layout/iron-flex-layout/classes/iron-shadow-flex-layout.html`.
+1. Edit the `components` task in `gulp/build.js` to include polymerBowerAssetsToCopy like:
+
+  ```javascript
+  polymerBowerAssetsToCopy = [
+    'polymer/polymer*.html',
+    'iron-flex-layout/iron-flex-layout.html',
+    'iron-flex-layout/classes/*.html',
+    'paper-styles/{color,default-theme,paper-styles,shadow.html,typography.html}',
+    'paper-toolbar/paper-toolbar.html'
+  ].map(function (file) {
+    return bowerDir + file;
+  });
+  ```
+
+1. Edit the `componentsInject` task in `gulp/build.js` to include
+
+  ```javascript
+  var polymerAssetsToInject = [
+    'polymer/polymer.html',
+    'paper-styles/paper-styles.html'
+  ].map(function (file) {
+    return config.buildComponents + file;
+  });
+  ```
+
+1. Now, we can use the `<paper-toolbar>` element in our code.
+
+**Note: for custom components, we just need to include them in `polymerAssetsToInject`. They are all automically copied.**
+* * *
+
+## Contributors
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+| [<img src="https://avatars.githubusercontent.com/u/2449282?v=3" width="100px;"/><br /><sub>Dustin Specker</sub>](http://dustinspecker.com)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=dustinspecker) [📖](https://github.com/dustinspecker/generator-ng-poly/commits?author=dustinspecker) [⚠️](https://github.com/dustinspecker/generator-ng-poly/commits?author=dustinspecker) | [<img src="https://avatars.githubusercontent.com/u/211327?v=3" width="100px;"/><br /><sub>Binh Nguyen</sub>](https://github.com/ngbinh)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=ngbinh) [📖](https://github.com/dustinspecker/generator-ng-poly/commits?author=ngbinh) [⚠️](https://github.com/dustinspecker/generator-ng-poly/commits?author=ngbinh) | [<img src="https://avatars.githubusercontent.com/u/2411585?v=3" width="100px;"/><br /><sub>Roman C. Podolski</sub>](https://github.com/RomanCPodolski)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=RomanCPodolski) | [<img src="https://avatars.githubusercontent.com/u/1423875?v=3" width="100px;"/><br /><sub>David Brown</sub>](http://bit.ly/lndbgh)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=TheOneTheOnlyDavidBrown) [📖](https://github.com/dustinspecker/generator-ng-poly/commits?author=TheOneTheOnlyDavidBrown) | [<img src="https://avatars.githubusercontent.com/u/656302?v=3" width="100px;"/><br /><sub>David Steinkopff</sub>](https://github.com/zeitiger)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=zeitiger) | [<img src="https://avatars.githubusercontent.com/u/1281379?v=3" width="100px;"/><br /><sub>Frode Egeland</sub>](http://www.onsentipster.com)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=egeland) [⚠️](https://github.com/dustinspecker/generator-ng-poly/commits?author=egeland) | [<img src="https://avatars.githubusercontent.com/u/857700?v=3" width="100px;"/><br /><sub>Scott Busche</sub>](https://github.com/busches)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=busches) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/4741812?v=3" width="100px;"/><br /><sub>Rafael Zeffa</sub>](http://rafaelhz.github.io)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=rafaelhz) [⚠️](https://github.com/dustinspecker/generator-ng-poly/commits?author=rafaelhz) | [<img src="https://avatars.githubusercontent.com/u/1016365?v=3" width="100px;"/><br /><sub>PatrickJS</sub>](http://angularclass.com)<br />[📖](https://github.com/dustinspecker/generator-ng-poly/commits?author=gdi2290) | [<img src="https://avatars.githubusercontent.com/u/55122?v=3" width="100px;"/><br /><sub>Tiago de Assis Gonçalves</sub>](http://br.linkedin.com/in/tiagoassisgoncalves)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=legiao) | [<img src="https://avatars.githubusercontent.com/u/1576014?v=3" width="100px;"/><br /><sub>Ruslan Stelmachenko</sub>](https://github.com/xak2000)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=xak2000) | [<img src="https://avatars.githubusercontent.com/u/3155133?v=3" width="100px;"/><br /><sub>Jeff Arese Vilar</sub>](https://github.com/Jeffarese)<br />[💻](https://github.com/dustinspecker/generator-ng-poly/commits?author=Jeffarese) |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification.
+Contributions of any kind welcome!
 
 ### License
 

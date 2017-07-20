@@ -1,13 +1,13 @@
-/*global describe, before, it */
+/* global describe, before, it */
 'use strict';
-var assert = require('yeoman-generator').assert
-  , helpers = require('yeoman-generator').test
-  , join = require('path').join;
+import assert from 'yeoman-assert';
+import {join} from 'path';
+import helpers from 'yeoman-test';
 
-describe('Service generator', function () {
-  before(function (done) {
+describe('Service generator', () => {
+  before(done => {
     helpers
-      .run(join(__dirname, '../app'))
+      .run(join(__dirname, '../generators/app'))
       .withPrompts({
         appName: 'temp-service',
         markup: 'html',
@@ -19,18 +19,18 @@ describe('Service generator', function () {
         bower: []
       })
       .withGenerators([
-        join(__dirname, '../module'),
-        join(__dirname, '../route'),
-        join(__dirname, '../controller'),
-        join(__dirname, '../view')
+        join(__dirname, '../generators/module'),
+        join(__dirname, '../generators/route'),
+        join(__dirname, '../generators/controller'),
+        join(__dirname, '../generators/view')
       ])
       .on('end', done);
   });
 
-  describe('with JS app and JS test with module-type', function () {
-    before(function (done) {
+  describe('with JS app and JS test with module-type', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../service'), {
+        .run(join(__dirname, '../generators/service'), {
           tmpdir: false
         })
         .withArguments(['test'])
@@ -41,7 +41,7 @@ describe('Service generator', function () {
         .on('end', done);
     });
 
-    it('should create service files', function () {
+    it('should create service files', () => {
       assert.file([
         'app/home/services/test-service.js',
         'app/home/services/test-service_test.js'
@@ -49,10 +49,10 @@ describe('Service generator', function () {
     });
   });
 
-  describe('with Coffee app and Coffee test', function () {
-    before(function (done) {
+  describe('with Coffee app and Coffee test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../service'), {
+        .run(join(__dirname, '../generators/service'), {
           tmpdir: false
         })
         .withArguments(['test1'])
@@ -65,7 +65,7 @@ describe('Service generator', function () {
         .on('end', done);
     });
 
-    it('should create service files', function () {
+    it('should create service files', () => {
       assert.file([
         'app/home/test1-service.coffee',
         'app/home/test1-service_test.coffee'
@@ -73,10 +73,10 @@ describe('Service generator', function () {
     });
   });
 
-  describe('with TypeScript app and TypeScript test', function () {
-    before(function (done) {
+  describe('with TypeScript app and TypeScript test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../service'), {
+        .run(join(__dirname, '../generators/service'), {
           tmpdir: false
         })
         .withArguments(['test2'])
@@ -89,7 +89,7 @@ describe('Service generator', function () {
         .on('end', done);
     });
 
-    it('should create service files', function () {
+    it('should create service files', () => {
       assert.file([
         'app/home/test2-service.ts',
         'app/home/test2-service_test.ts'

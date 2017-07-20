@@ -1,15 +1,20 @@
 sudo: false
 language: node_js
 node_js:
-- iojs
-- '0.12'
-- '0.10'
-before_install:
-- npm install -g gulp
-after_success: npm run-script coveralls
+  - '5'
+  - '4'
 notifications:
-  slack:
-    on_success: change
-    on_failure: always
-    rooms:
-      secure: HFzTuz67kFewMd1bZM1RxMWji+CGKf9qpGFj2k0DtDieCSuAG48gYr+ccxNvG8qalLAKrqb4Q0TX9MZbwREDqfbin5shFjtV9WBsL1issuSmo6vwqy63Fxz+7mzI16TpTLvxoxGOtwUi2OKLNAjmtdXsyxaQl6LOxRFtf3cFiWM=
+  email: false
+before_script:
+  - npm prune
+script:
+ - npm run test
+after_success:
+  - 'curl -Lo travis_after_all.py https://git.io/travis_after_all'
+  - python travis_after_all.py
+  - 'export $(cat .to_export_back) &> /dev/null'
+  - npm run-script coveralls
+  - npm run semantic-release
+branches:
+  except:
+    - "/^v\\d+\\.\\d+\\.\\d+$/"

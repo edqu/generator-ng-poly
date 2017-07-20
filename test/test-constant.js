@@ -1,13 +1,13 @@
-/*global describe, before, it */
+/* global describe, before, it */
 'use strict';
-var assert = require('yeoman-generator').assert
-  , helpers = require('yeoman-generator').test
-  , join = require('path').join;
+import assert from 'yeoman-assert';
+import {join} from 'path';
+import helpers from 'yeoman-test';
 
-describe('Constant generator', function () {
-  before(function (done) {
+describe('Constant generator', () => {
+  before(done => {
     helpers
-      .run(join(__dirname, '../app'))
+      .run(join(__dirname, '../generators/app'))
       .withPrompts({
         appName: 'temp-constant',
         markup: 'html',
@@ -19,31 +19,29 @@ describe('Constant generator', function () {
         bower: []
       })
       .withGenerators([
-        join(__dirname, '../module'),
-        join(__dirname, '../route'),
-        join(__dirname, '../controller'),
-        join(__dirname, '../view')
+        join(__dirname, '../generators/module'),
+        join(__dirname, '../generators/route'),
+        join(__dirname, '../generators/controller'),
+        join(__dirname, '../generators/view')
       ])
       .on('end', done);
   });
 
-  describe('with JS app and JS test with module-type', function () {
-    before(function (done) {
+  describe('with JS app and JS test with module-type', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../constant'), {
+        .run(join(__dirname, '../generators/constant'), {
           tmpdir: false
         })
         .withArguments(['test'])
         .withOptions({
-          structure: 'module-type'
-        })
-        .withPrompts({
-          module: 'home/'
+          structure: 'module-type',
+          module: 'home'
         })
         .on('end', done);
     });
 
-    it('should create constant files', function () {
+    it('should create constant files', () => {
       assert.file([
         'app/home/constants/test-constant.js',
         'app/home/constants/test-constant_test.js'
@@ -51,24 +49,22 @@ describe('Constant generator', function () {
     });
   });
 
-  describe('with TypeScript app and TypeScript test', function () {
-    before(function (done) {
+  describe('with TypeScript app and TypeScript test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../constant'), {
+        .run(join(__dirname, '../generators/constant'), {
           tmpdir: false
         })
         .withArguments(['test1'])
-        .withPrompts({
-          module: 'app'
-        })
         .withOptions({
           'app-script': 'ts',
+          module: 'app',
           'test-script': 'ts'
         })
         .on('end', done);
     });
 
-    it('should create constant files', function () {
+    it('should create constant files', () => {
       assert.file([
         'app/test1-constant.ts',
         'app/test1-constant_test.ts'
@@ -76,24 +72,22 @@ describe('Constant generator', function () {
     });
   });
 
-  describe('with Coffee app and Coffee test', function () {
-    before(function (done) {
+  describe('with Coffee app and Coffee test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../constant'), {
+        .run(join(__dirname, '../generators/constant'), {
           tmpdir: false
         })
         .withArguments(['test2'])
-        .withPrompts({
-          module: 'app'
-        })
         .withOptions({
           'app-script': 'coffee',
+          module: 'app',
           'test-script': 'coffee'
         })
         .on('end', done);
     });
 
-    it('should create constant files', function () {
+    it('should create constant files', () => {
       assert.file([
         'app/test2-constant.coffee',
         'app/test2-constant_test.coffee'
@@ -101,21 +95,22 @@ describe('Constant generator', function () {
     });
   });
 
-  describe('with ES6 app and ES6 test', function () {
-    before(function (done) {
+  describe('with ES6 app and ES6 test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../constant'), {
+        .run(join(__dirname, '../generators/constant'), {
           tmpdir: false
         })
         .withArguments(['test3'])
         .withOptions({
           'app-script': 'es6',
+          module: 'app',
           'test-script': 'es6'
         })
         .on('end', done);
     });
 
-    it('should create constant files', function () {
+    it('should create constant files', () => {
       assert.file([
         'app/test3-constant.es6',
         'app/test3-constant_test.es6'

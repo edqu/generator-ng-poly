@@ -1,20 +1,20 @@
-/*global describe, it */
+/* global describe, it */
 'use strict';
-var assert = require('assert')
-  , elementUtils = require('../utils/element');
+import elementUtils from '../generators/utils/element';
+import {expect} from 'chai';
 
-describe('Element Utils', function () {
-  describe('checkElementName', function () {
-    it('should return false for name without a hyphen', function () {
-      assert(elementUtils.checkElementName('elementname') === false);
+describe('Element Utils', () => {
+  describe('checkElementName', () => {
+    it('should return false for name without a hyphen', () => {
+      expect(elementUtils.checkElementName('elementname')).to.eql(false);
     });
 
-    it('should return false for name ending with a hyphen', function () {
-      assert(elementUtils.checkElementName('elementname-') === false);
+    it('should return false for name ending with a hyphen', () => {
+      expect(elementUtils.checkElementName('elementname-')).to.eql(false);
     });
 
-    it('should return true for name with hyphen in middle', function () {
-      assert(elementUtils.checkElementName('element-name') === true);
+    it('should return true for name with hyphen in middle', () => {
+      expect(elementUtils.checkElementName('element-name')).to.eql(true);
     });
   });
 });

@@ -1,13 +1,13 @@
-/*global describe, before, it */
+/* global describe, before, it */
 'use strict';
-var assert = require('yeoman-generator').assert
-  , helpers = require('yeoman-generator').test
-  , join = require('path').join;
+import assert from 'yeoman-assert';
+import {join} from 'path';
+import helpers from 'yeoman-test';
 
-describe('Filter generator', function () {
-  before(function (done) {
+describe('Filter generator', () => {
+  before(done => {
     helpers
-      .run(join(__dirname, '../app'))
+      .run(join(__dirname, '../generators/app'))
       .withPrompts({
         appName: 'temp-filter',
         markup: 'html',
@@ -19,18 +19,18 @@ describe('Filter generator', function () {
         bower: []
       })
       .withGenerators([
-        join(__dirname, '../module'),
-        join(__dirname, '../route'),
-        join(__dirname, '../controller'),
-        join(__dirname, '../view')
+        join(__dirname, '../generators/module'),
+        join(__dirname, '../generators/route'),
+        join(__dirname, '../generators/controller'),
+        join(__dirname, '../generators/view')
       ])
       .on('end', done);
   });
 
-  describe('with JS app and JS test with module-type', function () {
-    before(function (done) {
+  describe('with JS app and JS test with module-type', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../filter'), {
+        .run(join(__dirname, '../generators/filter'), {
           tmpdir: false
         })
         .withArguments(['test'])
@@ -41,7 +41,7 @@ describe('Filter generator', function () {
         .on('end', done);
     });
 
-    it('should create filter files', function () {
+    it('should create filter files', () => {
       assert.file([
         'app/home/filters/test-filter.js',
         'app/home/filters/test-filter_test.js'
@@ -49,10 +49,10 @@ describe('Filter generator', function () {
     });
   });
 
-  describe('with Coffee app and Coffee test', function () {
-    before(function (done) {
+  describe('with Coffee app and Coffee test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../filter'), {
+        .run(join(__dirname, '../generators/filter'), {
           tmpdir: false
         })
         .withArguments(['test1'])
@@ -65,7 +65,7 @@ describe('Filter generator', function () {
         .on('end', done);
     });
 
-    it('should create filter files', function () {
+    it('should create filter files', () => {
       assert.file([
         'app/home/test1-filter.coffee',
         'app/home/test1-filter_test.coffee'
@@ -73,9 +73,9 @@ describe('Filter generator', function () {
     });
   });
 
-  describe('with TypeScript app and TypeScript test', function () {
-    before(function (done) {
-      helpers.run(join(__dirname, '../filter'), {
+  describe('with TypeScript app and TypeScript test', () => {
+    before(done => {
+      helpers.run(join(__dirname, '../generators/filter'), {
         tmpdir: false
       })
         .withArguments(['test2'])
@@ -88,7 +88,7 @@ describe('Filter generator', function () {
         .on('end', done);
     });
 
-    it('should create filter files', function () {
+    it('should create filter files', () => {
       assert.file([
         'app/home/test2-filter.ts',
         'app/home/test2-filter_test.ts'
@@ -96,9 +96,9 @@ describe('Filter generator', function () {
     });
   });
 
-  describe('with ES6 app and ES6 test', function () {
-    before(function (done) {
-      helpers.run(join(__dirname, '../filter'), {
+  describe('with ES6 app and ES6 test', () => {
+    before(done => {
+      helpers.run(join(__dirname, '../generators/filter'), {
         tmpdir: false
       })
         .withArguments(['test2'])
@@ -111,7 +111,7 @@ describe('Filter generator', function () {
         .on('end', done);
     });
 
-    it('should create filter files', function () {
+    it('should create filter files', () => {
       assert.file([
         'app/home/test2-filter.es6',
         'app/home/test2-filter_test.es6'

@@ -1,13 +1,13 @@
-/*global describe, before, it */
+/* global describe, before, it */
 'use strict';
-var assert = require('yeoman-generator').assert
-  , helpers = require('yeoman-generator').test
-  , join = require('path').join;
+import assert from 'yeoman-assert';
+import {join} from 'path';
+import helpers from 'yeoman-test';
 
-describe('Factory generator', function () {
-  before(function (done) {
+describe('Factory generator', () => {
+  before(done => {
     helpers
-      .run(join(__dirname, '../app'))
+      .run(join(__dirname, '../generators/app'))
       .withPrompts({
         appName: 'temp-factory',
         markup: 'html',
@@ -19,18 +19,18 @@ describe('Factory generator', function () {
         bower: []
       })
       .withGenerators([
-        join(__dirname, '../module'),
-        join(__dirname, '../route'),
-        join(__dirname, '../controller'),
-        join(__dirname, '../view')
+        join(__dirname, '../generators/module'),
+        join(__dirname, '../generators/route'),
+        join(__dirname, '../generators/controller'),
+        join(__dirname, '../generators/view')
       ])
       .on('end', done);
   });
 
-  describe('with JS app and JS test with module-type', function () {
-    before(function (done) {
+  describe('with JS app and JS test with module-type', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../factory'), {
+        .run(join(__dirname, '../generators/factory'), {
           tmpdir: false
         })
         .withArguments(['test'])
@@ -41,7 +41,7 @@ describe('Factory generator', function () {
         .on('end', done);
     });
 
-    it('should create factory files', function () {
+    it('should create factory files', () => {
       assert.file([
         'app/home/factories/test-factory.js',
         'app/home/factories/test-factory_test.js'
@@ -49,10 +49,10 @@ describe('Factory generator', function () {
     });
   });
 
-  describe('with Coffee app and Coffee test', function () {
-    before(function (done) {
+  describe('with Coffee app and Coffee test', () => {
+    before(done => {
       helpers
-        .run(join(__dirname, '../factory'), {
+        .run(join(__dirname, '../generators/factory'), {
           tmpdir: false
         })
         .withArguments(['test1'])
@@ -65,7 +65,7 @@ describe('Factory generator', function () {
         .on('end', done);
     });
 
-    it('should create factory files', function () {
+    it('should create factory files', () => {
       assert.file([
         'app/home/test1-factory.coffee',
         'app/home/test1-factory_test.coffee'
@@ -73,9 +73,9 @@ describe('Factory generator', function () {
     });
   });
 
-  describe('with TypeScript app and TypeScript test', function () {
-    before(function (done) {
-      helpers.run(join(__dirname, '../factory'), {
+  describe('with TypeScript app and TypeScript test', () => {
+    before(done => {
+      helpers.run(join(__dirname, '../generators/factory'), {
         tmpdir: false
       })
         .withArguments(['test2'])
@@ -88,7 +88,7 @@ describe('Factory generator', function () {
         .on('end', done);
     });
 
-    it('should create factory files', function () {
+    it('should create factory files', () => {
       assert.file([
         'app/home/test2-factory.ts',
         'app/home/test2-factory_test.ts'
@@ -96,9 +96,9 @@ describe('Factory generator', function () {
     });
   });
 
-  describe('with ES6 app and ES6 test', function () {
-    before(function (done) {
-      helpers.run(join(__dirname, '../factory'), {
+  describe('with ES6 app and ES6 test', () => {
+    before(done => {
+      helpers.run(join(__dirname, '../generators/factory'), {
         tmpdir: false
       })
         .withArguments(['test2'])
@@ -111,7 +111,7 @@ describe('Factory generator', function () {
         .on('end', done);
     });
 
-    it('should create factory files', function () {
+    it('should create factory files', () => {
       assert.file([
         'app/home/test2-factory.es6',
         'app/home/test2-factory_test.es6'

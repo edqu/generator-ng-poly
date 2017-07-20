@@ -1,16 +1,16 @@
-/*global describe, before, it */
+/* global describe, before, it */
 'use strict';
-var assert = require('yeoman-generator').assert
-  , helpers = require('yeoman-generator').test
-  , path = require('path');
+import assert from 'yeoman-assert';
+import path from 'path';
+import helpers from 'yeoman-test';
 
-describe('Module generator', function () {
+describe('Module generator', () => {
   // generate default app
   // appName different than directory for code coverage
   // stub installDependencies for code coverage
-  before(function (done) {
+  before(done => {
     helpers
-      .run(path.join(__dirname, '../app'))
+      .run(path.join(__dirname, '../generators/app'))
       .withPrompts({
         appName: 'temp-module',
         markup: 'html',
@@ -22,18 +22,18 @@ describe('Module generator', function () {
         bower: []
       })
       .withGenerators([
-        path.join(__dirname, '../module'),
-        path.join(__dirname, '../route'),
-        path.join(__dirname, '../controller'),
-        path.join(__dirname, '../view')
+        path.join(__dirname, '../generators/module'),
+        path.join(__dirname, '../generators/route'),
+        path.join(__dirname, '../generators/controller'),
+        path.join(__dirname, '../generators/view')
       ])
       .on('end', done);
   });
 
-  describe('adding a new empty module', function () {
-    before(function (done) {
+  describe('adding a new empty module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['testGroup'])
@@ -41,14 +41,14 @@ describe('Module generator', function () {
           empty: true
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    it('should not create a controller and view', function () {
+    it('should not create a controller and view', () => {
       assert.noFile([
         'app/test-group/test-group-routes.js',
         'app/test-group/test-group-controller.js',
@@ -60,10 +60,10 @@ describe('Module generator', function () {
     });
   });
 
-  describe('adding a new CoffeeScript module', function () {
-    before(function (done) {
+  describe('adding a new CoffeeScript module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['test-coffee/'])
@@ -71,14 +71,14 @@ describe('Module generator', function () {
           'app-script': 'coffee'
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    it('should add test files', function () {
+    it('should add test files', () => {
       assert.file([
         'app/test-coffee/test-coffee-module.coffee',
         'app/test-coffee/test-coffee-routes.coffee',
@@ -89,19 +89,19 @@ describe('Module generator', function () {
       ]);
     });
 
-    it('should add comma to ui.router in app/app-module.js', function () {
-      assert.fileContent('app/app-module.js', / {4}\'ui.router\',/);
+    it('should add comma to ui.router in app/app-module.js', () => {
+      assert.fileContent('app/app-module.js', / {4}'ui.router',/);
     });
 
-    it('should add testCoffee to app/app-module.js deps', function () {
-      assert.fileContent('app/app-module.js', / {4}\'testCoffee\'/);
+    it('should add testCoffee to app/app-module.js deps', () => {
+      assert.fileContent('app/app-module.js', / {4}'testCoffee'/);
     });
   });
 
-  describe('adding a new ES2105 module', function () {
-    before(function (done) {
+  describe('adding a new ES2105 module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['test-es6/'])
@@ -109,14 +109,14 @@ describe('Module generator', function () {
           'app-script': 'es6'
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    it('should add test files', function () {
+    it('should add test files', () => {
       assert.file([
         'app/test-es6/test-es6-module.es6',
         'app/test-es6/test-es6-routes.es6',
@@ -127,32 +127,32 @@ describe('Module generator', function () {
       ]);
     });
 
-    it('should add comma to ui.router in app/app-module.js', function () {
-      assert.fileContent('app/app-module.js', / {4}\'ui.router\',/);
+    it('should add comma to ui.router in app/app-module.js', () => {
+      assert.fileContent('app/app-module.js', / {4}'ui.router',/);
     });
 
-    it('should add testEs6 to app/app-module.js deps', function () {
-      assert.fileContent('app/app-module.js', / {4}\'testEs6\'/);
+    it('should add testEs6 to app/app-module.js deps', () => {
+      assert.fileContent('app/app-module.js', / {4}'testEs6'/);
     });
   });
 
   // trailing slash to test trailing slash removal
-  describe('adding a new JS module', function () {
-    before(function (done) {
+  describe('adding a new JS module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['test-js/'])
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    it('should add test files', function () {
+    it('should add test files', () => {
       assert.file([
         'app/test-js/test-js-module.js',
         'app/test-js/test-js-routes.js',
@@ -163,19 +163,19 @@ describe('Module generator', function () {
       ]);
     });
 
-    it('should add comma to ui.router in app/app-module.js', function () {
-      assert.fileContent('app/app-module.js', / {4}\'ui.router\',/);
+    it('should add comma to ui.router in app/app-module.js', () => {
+      assert.fileContent('app/app-module.js', / {4}'ui.router',/);
     });
 
-    it('should add testJs to app/app-module.js deps', function () {
-      assert.fileContent('app/app-module.js', / {4}\'testJs\'/);
+    it('should add testJs to app/app-module.js deps', () => {
+      assert.fileContent('app/app-module.js', / {4}'testJs'/);
     });
   });
 
-  describe('adding a new TS module', function () {
-    before(function (done) {
+  describe('adding a new TS module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['test-ts/'])
@@ -183,14 +183,14 @@ describe('Module generator', function () {
           'app-script': 'ts'
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    it('should add test files', function () {
+    it('should add test files', () => {
       assert.file([
         'app/test-ts/test-ts-module.ts',
         'app/test-ts/test-ts-routes.ts',
@@ -201,19 +201,19 @@ describe('Module generator', function () {
       ]);
     });
 
-    it('should add comma to ui.router in app/app-module.js', function () {
-      assert.fileContent('app/app-module.js', / {4}\'ui.router\',/);
+    it('should add comma to ui.router in app/app-module.js', () => {
+      assert.fileContent('app/app-module.js', / {4}'ui.router',/);
     });
 
-    it('should add testTs to app/app-module.js deps', function () {
-      assert.fileContent('app/app-module.js', / {4}\'testTs\'/);
+    it('should add testTs to app/app-module.js deps', () => {
+      assert.fileContent('app/app-module.js', / {4}'testTs'/);
     });
   });
 
-  describe('adding a deep level camelCase module', function () {
-    before(function (done) {
+  describe('adding a deep level camelCase module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['home/myDoor'])
@@ -221,78 +221,78 @@ describe('Module generator', function () {
           'app-script': 'coffee'
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    describe('adding a deeper level module', function () {
-      before(function (done) {
+    describe('adding a deeper level module', () => {
+      before(done => {
         helpers
-          .run(path.join(__dirname, '../module'), {
+          .run(path.join(__dirname, '../generators/module'), {
             tmpdir: false
           })
           .withArguments(['home/myDoor/handle'])
           .withGenerators([
-            path.join(__dirname, '../route'),
-            path.join(__dirname, '../controller'),
-            path.join(__dirname, '../view')
+            path.join(__dirname, '../generators/route'),
+            path.join(__dirname, '../generators/controller'),
+            path.join(__dirname, '../generators/view')
           ])
           .on('end', done);
       });
 
-      it('should add door.handle to app/home/my-door-module.coffee', function () {
-        assert.fileContent('app/home/my-door/my-door-module.coffee', / {4}\'myDoor.handle\'/);
+      it('should add door.handle to app/home/my-door-module.coffee', () => {
+        assert.fileContent('app/home/my-door/my-door-module.coffee', / {4}'myDoor.handle'/);
       });
 
-      it('should name module in app/home/my-door/my-door-module.coffee home.myDoor', function () {
-        assert.fileContent('app/home/my-door/my-door-module.coffee', /angular[^$]*.module[^$]*\'home.myDoor\'/);
+      it('should name module in app/home/my-door/my-door-module.coffee home.myDoor', () => {
+        assert.fileContent('app/home/my-door/my-door-module.coffee', /angular[^$]*.module[^$]*'home.myDoor'/);
       });
     });
 
-    it('should add comma to ui.router in app/home/home-module.js deps', function () {
-      assert.fileContent('app/home/home-module.js', / {4}\'ui.router\',/);
+    it('should add comma to ui.router in app/home/home-module.js deps', () => {
+      assert.fileContent('app/home/home-module.js', / {4}'ui.router',/);
     });
 
-    it('should add home.door to app/home/home-module.js deps', function () {
-      assert.fileContent('app/home/home-module.js', / {4}\'home.myDoor\'/);
+    it('should add home.door to app/home/home-module.js deps', () => {
+      assert.fileContent('app/home/home-module.js', / {4}'home.myDoor'/);
     });
   });
 
-  describe('adding a deep level hyphenated module', function () {
-    before(function (done) {
+  describe('adding a deep level hyphenated module', () => {
+    before(done => {
       helpers
-      .run(path.join(__dirname, '../module'), {
+      .run(path.join(__dirname, '../generators/module'), {
         tmpdir: false
       })
       .withArguments(['home/my-module'])
       .withGenerators([
-        path.join(__dirname, '../route'),
-        path.join(__dirname, '../controller'),
-        path.join(__dirname, '../view')
+        path.join(__dirname, '../generators/route'),
+        path.join(__dirname, '../generators/controller'),
+        path.join(__dirname, '../generators/view')
       ])
       .on('end', done);
     });
 
-    it('should create home.myModule in app/home/my-module/my-module-module.js', function () {
-      assert.fileContent('app/home/my-module/my-module-module.js', /angular[^$]*.module[^$]*\'home.myModule\'/);
+    it('should create home.myModule in app/home/my-module/my-module-module.js', () => {
+      assert.fileContent('app/home/my-module/my-module-module.js', /angular[^$]*.module[^$]*'home.myModule'/);
     });
 
-    it('should add home.myModule in app/home/home-module.js', function () {
-      assert.fileContent('app/home/home-module.js', / {4}\'home.myModule\'/);
+    it('should add home.myModule in app/home/home-module.js', () => {
+      assert.fileContent('app/home/home-module.js', / {4}'home.myModule'/);
     });
 
-    it('should add myModule state to app/home/my-module/my-module-routes.js', function () {
-      assert.fileContent('app/home/my-module/my-module-routes.js', /[.]state\(\'myModule\', /);
+    it('should add myModule state to app/home/my-module/my-module-routes.js', () => {
+      assert.fileContent('app/home/my-module/my-module-routes.js', /[.]state\('myModule', /);
     });
   });
 
-  describe('adding a deep level Typescript module', function () {
-    before(function (done) {
+  describe('adding a deep level Typescript module', () => {
+    before(done => {
       helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['home/myHouse'])
@@ -300,25 +300,25 @@ describe('Module generator', function () {
           'app-script': 'ts'
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
         .on('end', done);
     });
 
-    it('should add comma to ui.router in app/home/home-module.js deps', function () {
-      assert.fileContent('app/home/home-module.js', / {4}\'ui.router\',/);
+    it('should add comma to ui.router in app/home/home-module.js deps', () => {
+      assert.fileContent('app/home/home-module.js', / {4}'ui.router',/);
     });
 
-    it('should add home.myHouse to app/home/home-module.js deps', function () {
-      assert.fileContent('app/home/home-module.js', / {4}\'home.myHouse\'/);
+    it('should add home.myHouse to app/home/home-module.js deps', () => {
+      assert.fileContent('app/home/home-module.js', / {4}'home.myHouse'/);
     });
 
-    describe('adding a deeper level module', function () {
-      before(function (done) {
+    describe('adding a deeper level module', () => {
+      before(done => {
         helpers
-        .run(path.join(__dirname, '../module'), {
+        .run(path.join(__dirname, '../generators/module'), {
           tmpdir: false
         })
         .withArguments(['home/myHouse/handle'])
@@ -326,19 +326,19 @@ describe('Module generator', function () {
           'app-script': 'ts'
         })
         .withGenerators([
-          path.join(__dirname, '../route'),
-          path.join(__dirname, '../controller'),
-          path.join(__dirname, '../view')
+          path.join(__dirname, '../generators/route'),
+          path.join(__dirname, '../generators/controller'),
+          path.join(__dirname, '../generators/view')
         ])
           .on('end', done);
       });
 
-      it('should add myHouse.handle to app/home/my-house-module.ts', function () {
-        assert.fileContent('app/home/my-house/my-house-module.ts', / {4}\'myHouse.handle\'/);
+      it('should add myHouse.handle to app/home/my-house-module.ts', () => {
+        assert.fileContent('app/home/my-house/my-house-module.ts', / {4}'myHouse.handle'/);
       });
 
-      it('should name module in app/home/my-house/my-house-module.ts home.myHouse', function () {
-        assert.fileContent('app/home/my-house/my-house-module.ts', /angular[^$]*.module[^$]*\'home.myHouse\'/);
+      it('should name module in app/home/my-house/my-house-module.ts home.myHouse', () => {
+        assert.fileContent('app/home/my-house/my-house-module.ts', /angular[^$]*.module[^$]*'home.myHouse'/);
       });
     });
   });

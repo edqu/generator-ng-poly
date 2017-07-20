@@ -1,27 +1,48 @@
-/*global describe, it */
+/* global describe, beforeEach, it */
 'use strict';
-var a = require('a')
-  , assert = require('assert')
-  , proxyquire = require('proxyquire');
+import {expect} from 'chai';
+import {expectRequire} from 'a';
+import proxyquire from 'proxyquire';
+import {join} from 'path';
+import sinon from 'sinon';
 
-describe('App Utils', function () {
-  describe('getAppDir', function () {
-    it('should return app dir', function () {
-      // mock out path to avoid needing to use file system to find package.json
-      var pathStub = {
-          join: function () {
-            return 'build.config.js';
-          }
-        }
-        // proxy utils
-        , utilsProxy = proxyquire('../utils/app', {path: pathStub})
+describe('App Utils', () => {
+  let getYoRcPathStub, utilsProxy;
 
-        // mock response
-        , expectRequire = a.expectRequire;
+  beforeEach(() => {
+    getYoRcPathStub = {
+      dir: sinon.stub().returns(Promise.resolve('awesome-project'))
+    };
 
-      expectRequire('build.config.js').return({appDir: 'app'});
+    utilsProxy = proxyquire('../generators/utils/app', {
+      'get-yo-rc-path': getYoRcPathStub
+    });
+  });
 
-      assert(utilsProxy.getAppDir('test') === 'app');
+  describe('getAppDir', () => {
+    it('should return app dir', async () => {
+      expectRequire(join('awesome-project', 'build.config.js')).return({appDir: 'app'});
+
+      const appDir = await utilsProxy.getAppDir();
+      expect(appDir).to.eql('app');
+    });
+  });
+
+  describe('getFileFromRoot', () => {
+    it('should return file JS/JSON', async () => {
+      expectRequire(join('awesome-project', 'file.js')).return('file-contents');
+
+      const fileContents = await utilsProxy.getFileFromRoot('file.js');
+      expect(fileContents).to.eql('file-contents');
+    });
+  });
+
+  describe('getUnitTestDir', () => {
+    it('should return unit test dir', async () => {
+      expectRequire(join('awesome-project', 'build.config.js')).return({unitTestDir: 'test'});
+
+      const testDir = await utilsProxy.getUnitTestDir();
+      expect(testDir).to.eql('test');
     });
   });
 });
